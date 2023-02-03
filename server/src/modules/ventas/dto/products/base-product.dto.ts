@@ -18,7 +18,7 @@ import {
     IsArrayValidationOptions,
     isPositiveValidationOptions,
     IsIntValidationOptions
-  } from '@shared/validation';
+  } from 'src/shared/validation/validations-message';
 
   //validar los campos de la clase
 

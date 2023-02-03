@@ -13,11 +13,13 @@ import {
     Query,
   } from '@nestjs/common';
   import { ApiOperation, ApiTags } from '@nestjs/swagger';
-  //import { Auth } from '@auth/decorators';
-  import { CreateProductDto, FilterProductDto, UpdateProductDto } from '@uic/dto';
-  import { ProductEntity } from '@uic/entities';
-  import { ResponseHttpModel } from '@shared/models';
-  import { ProductsService } from '@uic/services';
+  import { ProductEntity } from '../entities/product.model';
+  import { CreateProductDto } from '../dto/products/create-product.dto';
+  import { FilterProductDto } from '../dto/products/filter-product.dto';
+  import { UpdateProductDto } from '../dto/products/update-product.dto';
+  import { ProductsService } from '../services/products.service';
+  import { ResponseHttpModel } from 'src/shared/models/response-http-model';
+  import { Auth } from 'src/modules/auth/decorators';
 
   
   @ApiTags('Products')
@@ -26,7 +28,7 @@ import {
     constructor(private productsService: ProductsService) {}
   
     @ApiOperation({ summary: 'Create One' })
-    //@Auth()
+    @Auth()
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() payload: CreateProductDto): Promise<ResponseHttpModel> {
@@ -48,8 +50,8 @@ import {
       return {
         data: serviceResponse.data,
         pagination: serviceResponse.pagination,
-        message: catalogue,
-        title: Catalogue,
+        message: 'catalogue',
+        title: 'Catalogue',
       };
     }
   
@@ -64,29 +66,28 @@ import {
       return {
         data: serviceResponse.data,
         pagination: serviceResponse.pagination,
-        message: index,
+        message: 'index',
         title: 'Success',
       };
     }
   
     @ApiOperation({ summary: 'Find One' })
-    //@Auth()
+    @Auth()
     @Get(':id')
     @HttpCode(HttpStatus.OK)
     async findOne(
-      @Param('id', ParseUUIDPipe) id: string,
-    ): Promise<ResponseHttpModel> {
+      @Param('id', ParseUUIDPipe) id: string,): Promise<ResponseHttpModel> {
       const serviceResponse = await this.productsService.findOne(id);
   
       return {
         data: serviceResponse.data,
-        message: show ${id},
-        title: Success,
+        message: 'show ${id} ',
+        title: 'Success',
       };
     }
   
     @ApiOperation({ summary: 'Update One' })
-   // @Auth()
+   @Auth()
     @Put(':id')
     @HttpCode(HttpStatus.CREATED)
     async update(
@@ -97,13 +98,13 @@ import {
   
       return {
         data: serviceResponse.data,
-        message: Product updated ${id},
-        title: Updated,
+        message: 'Product updated ${id}',
+        title: 'Updated',
       };
     }
   
     @ApiOperation({ summary: 'Remove One' })
-    //@Auth()
+    @Auth()
     @Delete(':id')
     @HttpCode(HttpStatus.CREATED)
     async remove(
@@ -113,13 +114,14 @@ import {
   
       return {
         data: serviceResponse.data,
-        message: Product deleted ${id},
-        title: Deleted,
+        message: 'Product deleted ${id}',
+        title: 'Deleted',
       };
     }
+
   
     @ApiOperation({ summary: 'Remove All' })
-    //@Auth()
+    @Auth()
     @Patch('remove-all')
     @HttpCode(HttpStatus.CREATED)
     async removeAll(@Body() payload: ProductEntity[]): Promise<ResponseHttpModel> {
@@ -127,8 +129,8 @@ import {
   
       return {
         data: serviceResponse.data,
-        message: Products deleted,
-        title: Deleted,
+        message: 'Products deleted',
+        title: 'Deleted',
       };
     }
   }
